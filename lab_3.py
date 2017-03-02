@@ -27,7 +27,8 @@ class Property:
 
     def prompt_init():
         # Creates a dictionary of values that can be passed into init
-        return dict(square_feet=input("Enter the square feet: "), beds=input("Enter number of bedrooms: "),
+        return dict(square_feet=input("Enter the square feet: "),
+                    beds=input("Enter number of bedrooms: "),
                     baths=input("Enter number of baths: "))
     prompt_init = staticmethod(prompt_init)
 
@@ -236,3 +237,38 @@ class Agent:
         PropertyClass = self.type_map[(property_type, payment_type)]
         init_args = PropertyClass.prompt_init()
         self.property_list.append(PropertyClass(**init_args))
+
+    def display_enumerated(self):
+        # Print enumerated property
+        number = 1
+        for p in self.property_list:
+            print('\nNUMBER ' + str(number) + '\n')
+            p.display()
+            number += 1
+
+    def del_property(self):
+        # Delete property from the list
+        self.display_enumerated()
+        try:
+            i = int(input('Which property number to remove?'))
+            self.property_list.pop(i - 1)
+            print('REMOVAL SUCCESSFUL!')
+        except (ValueError, TypeError):
+            print('WRONG INPUT')
+
+    def replace_property(self):
+        # Replace property with another one (maybe update)
+        self.display_enumerated()
+        try:
+            i = int(input('Which property number to replace?'))
+            self.property_list.pop(i - 1)
+            print('ENTER NEW PROPERTY')
+            self.add_property()
+        except (ValueError, TypeError):
+            print('WRONG INPUT')
+
+agent = Agent()
+agent.add_property()
+agent.add_property()
+agent.replace_property()
+agent.display_properties()
